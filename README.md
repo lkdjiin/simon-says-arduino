@@ -43,7 +43,7 @@ Check out [the code for step 1](https://github.com/lkdjiin/simon-with-arduino/re
 
 ### The object
 
-![Simon Step 2](images/simon-2.jpg)
+![Simon Step 2](images/simon-2_512.jpg)
 
 ### Rules
 

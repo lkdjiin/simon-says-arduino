@@ -39,7 +39,8 @@ begin. Simple enough.
 
 Check out [the code for step 1](https://github.com/lkdjiin/simon-with-arduino/releases/tag/step01)
 
-## Step 2
+Step 2
+------
 
 ### The object
 
@@ -59,6 +60,31 @@ This is the exact same rules as step 1, but now with 4 colors.
 ### Schema
 
 ![Step 2 schema](images/step2_bb.png)
+
+### The Code
+
+Check out [src/sketch.ino](https://github.com/lkdjiin/simon-with-arduino/releases/tag/step2)
+
+Step 3
+------
+
+### The object
+
+![Simon Step 3](images/simon-3_512.jpg)
+
+### Rules
+
+Same rules as step 2.
+
+### Components
+
+- 4 LEDs : red, green, blue and yellow.
+- 4 colorful momentary buttons.
+- 4 resistors of 220 Ohms, for the LEDs.
+- 4 resistors of 10k Ohms, for the buttons.
+- A piezzo.
+
+### Schema
 
 ### The Code
 

@@ -7,10 +7,15 @@ const byte buttonRed = 8;
 const byte buttonGreen = 9;
 const byte buttonBlue = 10;
 const byte buttonYellow = 11;
+
 const byte ledRed = 2;
 const byte ledGreen = 3;
 const byte ledBlue = 4;
 const byte ledYellow = 5;
+
+const byte buzzer = 13;
+
+int notes[] = {262, 311, 349, 392};
 
 byte computerTurn = 1;
 byte lastPly;
@@ -41,6 +46,7 @@ void loop() {
     } else {
       digitalWrite(ledYellow, HIGH);
     }
+    tone(buzzer, notes[lastPly], 200);
     delay(300);
     allLedsOff();
     computerTurn = 0;
@@ -90,6 +96,7 @@ void allLedsOff() {
 
 void lightTheLed(byte led) {
   digitalWrite(led, HIGH);
+  tone(buzzer, notes[led - 2], 200);
   delay(200);
   digitalWrite(led, LOW);
 }

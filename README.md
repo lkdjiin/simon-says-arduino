@@ -1,10 +1,10 @@
-Simon Says Game with Arduino
+Simon Game with Arduino
 ============================
 
 Description
 -----------
 
-My goal is to build the game of [Simon says]()
+My goal is to build the game of [Simon](http://en.wikipedia.org/wiki/Simon_%28game%29)
 from a prototype with Arduino to a real object. I'm doing/writing this to
 improve my skills in Arduino and electronic.
 
@@ -13,7 +13,7 @@ Step 1
 
 ### The object
 
-![Simon Says Step 1](images/simon-1.jpg)
+![Simon Step 1](images/simon-1.jpg)
 
 ### Rules
 

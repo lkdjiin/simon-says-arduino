@@ -11,7 +11,7 @@ improve my skills in Arduino and electronic.
 Step 1
 ------
 
-### The object
+### The Object
 
 ![Simon Step 1](images/simon-1.jpg)
 
@@ -35,7 +35,32 @@ begin. Simple enough.
 
 ![Step 1 schema](images/step1_bb.png)
 
-### The code
+### The Code
+
+Check out [the code for step 1](https://github.com/lkdjiin/simon-with-arduino/releases/tag/step01)
+
+## Step 2
+
+### The object
+
+![Simon Step 2](images/simon-2.jpg)
+
+### Rules
+
+This is the exact same rules as step 1, but now with 4 colors.
+
+### Components
+
+- 4 LEDs : red, green, blue and yellow.
+- 4 colorful momentary buttons.
+- 4 resistors of 220 Ohms, for the LEDs.
+- 4 resistors of 10k Ohms, for the buttons.
+
+### Schema
+
+![Step 2 schema](images/step2_bb.png)
+
+### The Code
 
 Check out [src/sketch.ino](src/sketch.ino)
 

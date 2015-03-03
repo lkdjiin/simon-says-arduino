@@ -3,113 +3,142 @@ const byte GREEN = 1;
 const byte BLUE = 2;
 const byte YELLOW = 3;
 
-const byte buttonRed = 8;
-const byte buttonGreen = 9;
-const byte buttonBlue = 10;
-const byte buttonYellow = 11;
+// Red button is pin 8, green button is pin 9, blue button is pin 10,
+// yellow button is pin 11.
+const byte BUTTON_BASE = 8;
 
-const byte ledRed = 2;
-const byte ledGreen = 3;
-const byte ledBlue = 4;
-const byte ledYellow = 5;
+// Red led is pin 2, green led is pin 3, blue led is pin 4 and yellow
+// led is pin 5.
+const byte LED_BASE = 2;
 
-const byte buzzer = 13;
+const byte BUZZER = 13;
 
 int notes[] = {262, 311, 349, 392};
 
-byte computerTurn = 1;
+boolean isComputerTurn = true;
 byte lastPly;
+byte plies[20];
+byte plyIndex = 0;
+
+byte answers[20];
+byte answerIndex = 0;
 
 void setup() {
-  pinMode(buttonRed, INPUT);
-  pinMode(buttonGreen, INPUT);
-  pinMode(buttonBlue, INPUT);
-  pinMode(buttonYellow, INPUT);
-  pinMode(ledRed, OUTPUT);
-  pinMode(ledGreen, OUTPUT);
-  pinMode(ledBlue, OUTPUT);
-  pinMode(ledYellow, OUTPUT);
-
+  for(byte i = 0; i < 4; i++) {
+    pinMode(BUTTON_BASE + i, INPUT);
+  }
+  for(byte i = 0; i < 4; i++) {
+    pinMode(LED_BASE + i, OUTPUT);
+  }
   randomSeed(analogRead(0));
 }
 
 void loop() {
-  if(computerTurn) {
-    lastPly = random(4);
+  isComputerTurn ? computerTurn() : playerTurn();
+}
+
+void computerTurn() {
+  computeNewPly();
+  playAllPlies();
+  isComputerTurn = false;
+}
+
+void computeNewPly() {
+  lastPly = random(4);
+  plies[plyIndex] = lastPly;
+  plyIndex++;
+}
+
+void playAllPlies() {
+  for(byte i = 0; i < plyIndex; i++) {
     allLedsOff();
-    if(lastPly == RED) {
-      digitalWrite(ledRed, HIGH);
-    } else if(lastPly == GREEN) {
-      digitalWrite(ledGreen, HIGH);
-    } else if(lastPly == BLUE) {
-      digitalWrite(ledBlue, HIGH);
-    } else {
-      digitalWrite(ledYellow, HIGH);
+    lightTheLed(plies[i]);
+    delay(400);
+  }
+  allLedsOff();
+}
+
+void playerTurn() {
+  // Records the state of the buttons.
+  byte states[4];
+  for(byte i = 0; i < 4; i++) {
+    states[i] = digitalRead(BUTTON_BASE + i);
+  }
+
+  if(isButtonPressed(states)) {
+    lightTheLedAndRecordAnswer(states);
+    isRightAnswer() ? rightAnswer() : gameOver();
+  }
+  delay(1);
+}
+
+boolean isButtonPressed(byte buttons[]) {
+  return buttons[RED] || buttons[GREEN] || buttons[BLUE] || buttons[YELLOW];
+}
+
+void lightTheLedAndRecordAnswer(byte states[]) {
+  for(byte i = RED; i <= YELLOW; i++) {
+    if(states[i]) {
+      lightTheLed(i);
+      answers[answerIndex] = i;
+      answerIndex++;
+      break;
     }
-    tone(buzzer, notes[lastPly], 200);
-    delay(300);
-    allLedsOff();
-    computerTurn = 0;
-  } else {
-    byte stateRed = digitalRead(buttonRed);
-    byte stateGreen = digitalRead(buttonGreen);
-    byte stateBlue = digitalRead(buttonBlue);
-    byte stateYellow = digitalRead(buttonYellow);
-    if(stateRed || stateGreen || stateBlue || stateYellow) {
-      if(stateRed) {
-        lightTheLed(ledRed);
-      } else if(stateGreen) {
-        lightTheLed(ledGreen);
-      } else if(stateBlue) {
-        lightTheLed(ledBlue);
-      } else {
-        lightTheLed(ledYellow);
-      }
-      if(isRightAnswer(stateRed, stateGreen, stateBlue, stateYellow)) {
-        delay(1500);
-      } else {
-        blinkLeds();
-        delay(2000);
-      }
-      computerTurn = 1;
-    }
-    delay(1);
   }
 }
 
-boolean isRightAnswer(byte red, byte green, byte blue, byte yellow) {
-  if( (red && lastPly == RED) || (green && lastPly == GREEN) ||
-      (blue && lastPly == BLUE) || (yellow && lastPly == YELLOW) ) {
+boolean isRightAnswer() {
+  if(answers[answerIndex - 1] == plies[answerIndex - 1]) {
     return true;
   } else {
     return false;
   }
-
 }
 
 void allLedsOff() {
-  digitalWrite(ledRed, LOW);
-  digitalWrite(ledGreen, LOW);
-  digitalWrite(ledBlue, LOW);
-  digitalWrite(ledYellow, LOW);
+  allLeds(LOW);
+}
+
+void allLedsOn() {
+  allLeds(HIGH);
+}
+
+void allLeds(int state) {
+  for(byte i = 0; i < 4; i++) {
+    digitalWrite(LED_BASE + i, state);
+  }
 }
 
 void lightTheLed(byte led) {
-  digitalWrite(led, HIGH);
-  tone(buzzer, notes[led - 2], 200);
+  digitalWrite(LED_BASE + led, HIGH);
+  tone(BUZZER, notes[led], 200);
   delay(200);
-  digitalWrite(led, LOW);
+  digitalWrite(LED_BASE + led, LOW);
 }
 
 void blinkLeds() {
   for(byte i = 0; i < 10; i++) {
-    digitalWrite(ledRed, HIGH);
-    digitalWrite(ledGreen, HIGH);
-    digitalWrite(ledBlue, HIGH);
-    digitalWrite(ledYellow, HIGH);
+    allLedsOn();
     delay(100);
     allLedsOff();
     delay(100);
   }
 }
 
+void gameOver() {
+  blinkLeds();
+  plyIndex = 0;
+  answerIndex = 0;
+  isComputerTurn = true;
+  delay(2000);
+}
+
+void rightAnswer() {
+  if(answerIndex == plyIndex) {
+    answerIndex = 0;
+    isComputerTurn = true;
+    delay(1000);
+  } else {
+    delay(1);
+  }
+}

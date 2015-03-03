@@ -90,6 +90,29 @@ Same rules as step 2.
 
 ### The Code
 
+Check out [src/sketch.ino](https://github.com/lkdjiin/simon-with-arduino/releases/tag/step3)
+
+Step 4
+------
+
+### The object
+
+Same as step 3.
+
+### Rules
+
+This is the rules of the real game of Simon.
+
+### Components
+
+Same as step 3.
+
+### Schema
+
+Same as step 3.
+
+### The Code
+
 Check out [src/sketch.ino](src/sketch.ino)
 
 License

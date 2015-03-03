@@ -23,6 +23,8 @@ byte plyIndex = 0;
 byte answers[20];
 byte answerIndex = 0;
 
+boolean isButtonUp = true;
+
 void setup() {
   for(byte i = 0; i < 4; i++) {
     pinMode(BUTTON_BASE + i, INPUT);
@@ -65,7 +67,10 @@ void playerTurn() {
     states[i] = digitalRead(BUTTON_BASE + i);
   }
 
-  if(isButtonPressed(states)) {
+  if(!isButtonPressed(states) && !isButtonUp) {
+    isButtonUp = true;
+  } else if(isButtonPressed(states) && isButtonUp) {
+    isButtonUp = false;
     lightTheLedAndRecordAnswer(states);
     isRightAnswer() ? rightAnswer() : gameOver();
   }

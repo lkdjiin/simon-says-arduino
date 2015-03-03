@@ -86,6 +86,8 @@ Same rules as step 2.
 
 ### Schema
 
+![Step 3 schema](images/step3_bb.png)
+
 ### The Code
 
 Check out [src/sketch.ino](src/sketch.ino)
